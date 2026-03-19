@@ -11,12 +11,20 @@
     --shop-accent: #ff4500;
 }
 
-body {
+html, body {
+    height: 100%;
     margin: 0;
     padding: 0;
+}
+
+body {
     font-family: 'Gowun Batang', serif;
-    background: #000 url('fortune_shop_bg.png') no-repeat center top fixed;
+    background-color: #000;
+    background-image: url('fortune_shop_bg.png');
+    background-repeat: no-repeat;
+    background-position: center 0;
     background-size: cover;
+    background-attachment: fixed;
     min-height: 100vh;
     display: flex;
     justify-content: center;

@@ -8,10 +8,13 @@ const PORT = process.env.PORT || 4000;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static('./')); // Serve frontend files
 
-// Unified Fortune API Proxy
-app.post('/api/fortune', async (req, res) => {
+// Nginx 서브패치(/saju) 및 로컬 루트 동시 지원
+app.use('/saju', express.static('./'));
+app.use(express.static('./'));
+
+// Unified Fortune API Proxy (두 경로 모두 수용)
+app.post(['/saju/api/fortune', '/api/fortune'], async (req, res) => {
     const { name, birthdate, gender } = req.body;
     
     if (!name || !birthdate) {

@@ -15,8 +15,9 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Gowun Batang', serif;
-    background: #000 url('fortune_shop_bg.png') no-repeat center top fixed;
+    background: #000 url('fortune_shop_bg.png') no-repeat center top;
     background-size: cover;
+    background-attachment: local;
     min-height: 100vh;
     display: flex;
     justify-content: center;

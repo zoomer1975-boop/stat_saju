@@ -20,16 +20,27 @@ html, body {
 body {
     font-family: 'Gowun Batang', serif;
     background-color: #000;
-    background-image: url('fortune_shop_bg.png');
-    background-repeat: no-repeat;
-    background-position: center 0;
-    background-size: cover;
-    background-attachment: fixed;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     color: var(--shop-black);
+    position: relative;
+}
+
+/* Background Layer - Ensures Top is Always Visible */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('fortune_shop_bg.png');
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: cover;
+    z-index: -2;
 }
 
 /* Semi-transparent Overlay */

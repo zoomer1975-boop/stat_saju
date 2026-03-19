@@ -5,3 +5,4 @@ logs/
 *.log
 agent.md
 .DS_Store
+.ecosystem.config.js

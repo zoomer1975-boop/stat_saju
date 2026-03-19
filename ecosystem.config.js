@@ -9,7 +9,7 @@ module.exports = {
       max_memory_restart: '1G',
       env: {
         NODE_ENV: 'production',
-        BASE_URL: 'your domain',
+        BASE_URL: 'https://stat6.kmu.ac.kr/saju',
         PORT: 3003,
       },
       error_file: 'logs/err.log',

@@ -5,31 +5,50 @@ const fetch = require('node-fetch');
 
 const fs = require('fs');
 const path = require('path');
+const { URL } = require('url');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
-const BASE_PATH = process.env.BASE_PATH || ''; // e.g. /saju
+const BASE_URL = process.env.BASE_URL || process.env.BASE_PATH || ''; 
+
+let mountPath = '';
+let baseHref = '/';
+
+if (BASE_URL) {
+    // 1. 전체 URL (http...) 형태인 경우 파싱, 아니면 그냥 경로로 취급
+    if (BASE_URL.startsWith('http')) {
+        const parsed = new URL(BASE_URL);
+        mountPath = parsed.pathname;
+        baseHref = BASE_URL.endsWith('/') ? BASE_URL : `${BASE_URL}/`;
+    } else {
+        mountPath = BASE_URL.startsWith('/') ? BASE_URL : `/${BASE_URL}`;
+        baseHref = mountPath.endsWith('/') ? mountPath : `${mountPath}/`;
+    }
+    // Express mount path 치환을 위해 끝에 달린 '/' 제거 (루트 제외)
+    if (mountPath.length > 1 && mountPath.endsWith('/')) {
+        mountPath = mountPath.slice(0, -1);
+    }
+}
 
 app.use(cors());
 app.use(express.json());
 
-// 동적으로 index.html을 읽어 <base> 태그를 환경 변수에 맞게 주입
-app.get([BASE_PATH || '/', `${BASE_PATH}/`, '/index.html'], (req, res) => {
+// 동적으로 index.html을 읽어 <base> 태그를 절대 주소로 주입
+app.get([mountPath || '/', `${mountPath}/`, '/index.html'], (req, res) => {
     let html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
-    const baseHref = BASE_PATH ? `${BASE_PATH}/` : '/';
     html = html.replace('<!-- BASE_HREF_PLACEHOLDER -->', `<base href="${baseHref}">`);
     res.send(html);
 });
 
-// 정적 파일 서빙 (index.html은 동적으로 응답하므로 static에서는 제외)
+// 정적 파일 서빙
 const staticOptions = { index: false };
-if (BASE_PATH) {
-    app.use(BASE_PATH, express.static('./', staticOptions));
+if (mountPath && mountPath !== '/') {
+    app.use(mountPath, express.static('./', staticOptions));
 }
 app.use(express.static('./', staticOptions));
 
 // Unified Fortune API Proxy (환경 변수 경로 지원)
-app.post([`${BASE_PATH}/api/fortune`, '/api/fortune'], async (req, res) => {
+app.post([`${mountPath}/api/fortune`, '/api/fortune'], async (req, res) => {
     const { name, birthdate, gender } = req.body;
     
     if (!name || !birthdate) {

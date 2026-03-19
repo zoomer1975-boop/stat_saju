@@ -3,18 +3,33 @@ const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch');
 
+const fs = require('fs');
+const path = require('path');
+
 const app = express();
 const PORT = process.env.PORT || 4000;
+const BASE_PATH = process.env.BASE_PATH || ''; // e.g. /saju
 
 app.use(cors());
 app.use(express.json());
 
-// Nginx 서브패치(/saju) 및 로컬 루트 동시 지원
-app.use('/saju', express.static('./'));
-app.use(express.static('./'));
+// 동적으로 index.html을 읽어 <base> 태그를 환경 변수에 맞게 주입
+app.get([BASE_PATH || '/', `${BASE_PATH}/`, '/index.html'], (req, res) => {
+    let html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+    const baseHref = BASE_PATH ? `${BASE_PATH}/` : '/';
+    html = html.replace('<!-- BASE_HREF_PLACEHOLDER -->', `<base href="${baseHref}">`);
+    res.send(html);
+});
 
-// Unified Fortune API Proxy (두 경로 모두 수용)
-app.post(['/saju/api/fortune', '/api/fortune'], async (req, res) => {
+// 정적 파일 서빙 (index.html은 동적으로 응답하므로 static에서는 제외)
+const staticOptions = { index: false };
+if (BASE_PATH) {
+    app.use(BASE_PATH, express.static('./', staticOptions));
+}
+app.use(express.static('./', staticOptions));
+
+// Unified Fortune API Proxy (환경 변수 경로 지원)
+app.post([`${BASE_PATH}/api/fortune`, '/api/fortune'], async (req, res) => {
     const { name, birthdate, gender } = req.body;
     
     if (!name || !birthdate) {

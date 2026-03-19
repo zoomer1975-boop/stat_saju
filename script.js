@@ -3,7 +3,7 @@
 const { useState, useEffect } = React;
 
 // No more API Keys here! Calling local proxy.
-const PROXY_URL = "/api/fortune";
+const PROXY_URL = "./api/fortune";
 
 const LOADING_MESSAGES = [
     "동자삼 하나 건져올리는 중...",

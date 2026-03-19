@@ -1,0 +1,192 @@
+/* style.css - Comic Fortune Shop Theme */
+
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Serif+KR:wght@400;700&display=swap');
+
+:root {
+    --shop-red: #8b0000;
+    --shop-gold: #ffd700;
+    --shop-purple: #4b0082;
+    --shop-paper: #fefae0;
+    --shop-black: #1a1a1a;
+    --shop-accent: #ff4500;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Gowun Batang', serif;
+    background: #000 url('fortune_shop_bg.png') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--shop-black);
+}
+
+/* Semi-transparent Overlay */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Main Container */
+.shop-container {
+    width: 90%;
+    max-width: 500px;
+    background: var(--shop-paper);
+    border: 8px double var(--shop-red);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 0 50px rgba(139, 0, 0, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Decorative Cornes (Simulated Dancheong) */
+.shop-container::after {
+    content: "🏮";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+}
+
+.shop-container::before {
+    content: "🏮";
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+}
+
+/* Header */
+.header h1 {
+    font-size: 2em;
+    text-align: center;
+    color: var(--shop-red);
+    margin-bottom: 25px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    border-bottom: 2px solid var(--shop-red);
+    padding-bottom: 10px;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+}
+
+.form-group input {
+    width: 80%;
+    padding: 12px;
+    border: 2px solid var(--shop-red);
+    border-radius: 30px;
+    background-color: white;
+    font-family: inherit;
+    font-size: 1.1em;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--shop-accent);
+    box-shadow: 0 0 10px rgba(255, 69, 0, 0.3);
+}
+
+/* Button */
+.shop-button {
+    display: block;
+    width: 100%;
+    background: linear-gradient(135deg, var(--shop-red), var(--shop-accent));
+    color: var(--shop-gold);
+    border: 3px solid var(--shop-gold);
+    padding: 15px;
+    font-size: 1.3em;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 6px 0 var(--shop-black);
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.shop-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 0 var(--shop-black);
+}
+
+.shop-button:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 var(--shop-black);
+}
+
+/* Loading Spinner/Text */
+.loading-box {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.incense-smoke {
+    font-size: 40px;
+    animation: wave 2s infinite ease-in-out;
+    display: inline-block;
+}
+
+@keyframes wave {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+/* Fortune Results */
+.scroll-item {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    background: linear-gradient(to bottom, #fff 90%, #f9f9f9);
+    position: relative;
+}
+
+.scroll-title {
+    color: var(--shop-red);
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+}
+
+.total-score {
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--shop-purple);
+    margin: 20px 0;
+    padding: 10px;
+    border: 2px dashed var(--shop-purple);
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+    margin-top: 20px;
+    line-height: 1.6;
+}
